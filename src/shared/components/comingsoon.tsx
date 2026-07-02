@@ -120,35 +120,7 @@ export default function ComingSoon() {
         }} />
       </div>
 
-      {/* ── Floating academic emoji decorators (hidden on mobile) ── */}
-      {FLOATERS.map((f) => {
-        const pos: React.CSSProperties = {};
-        if (f.top)    pos.top    = f.top;
-        if (f.bottom) pos.bottom = f.bottom;
-        if (f.left)   pos.left   = f.left;
-        if (f.right)  pos.right  = f.right;
-
-        return (
-          <div
-            key={f.emoji}
-            aria-hidden
-            className="cs-floater"
-            style={{
-              position: "absolute",
-              ...pos,
-              "--rot":   `rotate(${f.rotate}deg)`,
-              "--dur":   f.duration,
-              "--delay": f.delay,
-              display:   "none",
-              ...({ "@media(min-width:768px)": { display: "block" } }),
-            } as React.CSSProperties}
-          >
-            {/* We use a simple media-query class trick via Tailwind on the wrapper */}
-          </div>
-        );
-      })}
-
-      {/* ── Floaters rendered via Tailwind md: visibility ── */}
+      {/* ── Floating academic emoji decorators — desktop only ── */}
       <div aria-hidden className="hidden md:block">
         {FLOATERS.map((f) => {
           const pos: React.CSSProperties = {};

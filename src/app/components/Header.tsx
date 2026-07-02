@@ -1,13 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
-  { label: "Home",         href: "#hero"         },
   { label: "Features",     href: "#features"     },
   { label: "AI Tools",     href: "#ai"           },
   { label: "For Students", href: "#for-students" },
@@ -31,7 +29,15 @@ export default function Header() {
 
   const scrollToSection = (href: string) => {
     setOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+    if (href === "#hero") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const element = document.querySelector(href);
+    if (!element) return;
+    const navHeight = document.querySelector("nav")?.offsetHeight ?? 80;
+    const top = element.getBoundingClientRect().top + window.scrollY - navHeight;
+    window.scrollTo({ top, behavior: "smooth" });
   };
 
   return (
@@ -45,12 +51,12 @@ export default function Header() {
       >
         <div className="max-w-7xl mx-auto px-5 sm:px-8 h-[68px] lg:h-[80px] flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 lg:gap-3 shrink-0">
+          <button onClick={() => scrollToSection("#hero")} className="flex items-center gap-2.5 lg:gap-3 shrink-0 cursor-pointer">
             <Image src="/logo.png" alt="Student Life" width={36} height={36} className="rounded-[10px] lg:w-[42px] lg:h-[42px]" priority />
             <span className="font-[family-name:var(--font-sora)] font-bold text-base lg:text-lg text-[#0f172a] tracking-tight">
               Student Life
             </span>
-          </Link>
+          </button>
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-9">
@@ -101,10 +107,10 @@ export default function Header() {
           />
           <div className="mobile-drawer fixed top-0 right-0 bottom-0 z-50 w-[80%] max-w-[300px] bg-white shadow-2xl flex flex-col md:hidden">
             <div className="flex items-center justify-between px-5 py-4 border-b border-black/5">
-              <Link href="/" className="flex items-center gap-2.5" onClick={() => setOpen(false)}>
+              <button onClick={() => scrollToSection("#hero")} className="flex items-center gap-2.5">
                 <Image src="/logo.png" alt="Student Life" width={32} height={32} className="rounded-[10px]" />
                 <span className="font-bold text-[#0f172a]">Student Life</span>
-              </Link>
+              </button>
               <button
                 onClick={() => setOpen(false)}
                 className="p-2 rounded-xl hover:bg-slate-100 transition-colors"
