@@ -1,7 +1,5 @@
-import ComingSoon from "@/shared/components/comingsoon";
+import { redirect } from "next/navigation";
 
 export default function Register() {
-    return (
-        <ComingSoon />
-    )
+  redirect("http://localhost:");
 }
