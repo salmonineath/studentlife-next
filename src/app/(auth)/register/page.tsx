@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import ComingSoon from "@/shared/components/comingsoon";
 
-const REGISTER_URL = "http://localhost:";
+// const REGISTER_URL = "http://localhost:";
+const DUMMYURL = process.env.NEXT_PUBLIC_URL
 
 async function isReachable(url: string) {
   try {
@@ -17,8 +18,8 @@ async function isReachable(url: string) {
 }
 
 export default async function Register() {
-  if (await isReachable(REGISTER_URL)) {
-    redirect(REGISTER_URL);
+  if (DUMMYURL && (await isReachable(DUMMYURL))) {
+    redirect(DUMMYURL);
   }
 
   return <>

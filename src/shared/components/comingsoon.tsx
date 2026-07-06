@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 
 // ── Floating decorator config ──────────────────────────────────────────────────
 const FLOATERS = [
@@ -13,39 +14,16 @@ const FLOATERS = [
   { emoji: "⭐", color: "rgba(168,85,247,0.12)", border: "rgba(168,85,247,0.18)", bottom: "14%", right: "6%",rotate: 7,  delay: "1.1s",  duration: "6.8s", size: 60, font: 26 },
 ];
 
-// ── Social icon SVGs ───────────────────────────────────────────────────────────
-function TelegramIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-    </svg>
-  );
-}
-function FacebookIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-    </svg>
-  );
-}
-function XIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-    </svg>
-  );
-}
-
 // ── Component ──────────────────────────────────────────────────────────────────
 export default function ComingSoon() {
-  const [email, setEmail]         = useState("");
-  const [focused, setFocused]     = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-    setSubmitted(true);
+  const handleGoBack = () => {
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/");
+    }
   };
 
   return (
@@ -90,6 +68,13 @@ export default function ComingSoon() {
           background: #059669 !important;
           transform: translateY(-1px);
           box-shadow: 0 8px 20px rgba(16,185,129,0.3) !important;
+        }
+        .cs-back:hover {
+          background: #ffffff !important;
+          border-color: rgba(16,185,129,0.35) !important;
+          color: #059669 !important;
+          transform: translateX(-2px);
+          box-shadow: 0 6px 18px rgba(15,23,42,0.08) !important;
         }
         @media (prefers-reduced-motion: reduce) {
           * { animation: none !important; transition: none !important; }
@@ -245,142 +230,33 @@ export default function ComingSoon() {
           </span>
         </h1>
 
-        {/* Email form */}
-        <div
+        {/* Go back button */}
+        <button
+          type="button"
+          onClick={handleGoBack}
+          className="cs-back"
           style={{
-            width: "100%", maxWidth: 440,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 6,
+            background: "rgba(255,255,255,0.7)",
+            border: "1px solid rgba(15,23,42,0.1)",
+            borderRadius: 999,
+            padding: "10px 20px 10px 16px",
+            fontFamily: "var(--font-geist, sans-serif)",
+            fontSize: "0.875rem",
+            fontWeight: 600,
+            color: "#475569",
+            cursor: "pointer",
+            backdropFilter: "blur(6px)",
+            transition: "background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease",
             animation: "cs-fade-up 0.6s cubic-bezier(0.16,1,0.3,1) both",
             animationDelay: "0.25s",
           }}
         >
-          {!submitted ? (
-            <>
-              <form
-                onSubmit={handleSubmit}
-                style={{
-                  display: "flex", gap: 8, flexWrap: "wrap",
-                  background: "#fff",
-                  border: `1.5px solid ${focused ? "rgba(16,185,129,0.5)" : "#d7dce3"}`,
-                  borderRadius: 16,
-                  padding: "6px 6px 6px 16px",
-                  boxShadow: focused
-                    ? "0 0 0 3px rgba(16,185,129,0.1), 0 4px 16px rgba(0,0,0,0.06)"
-                    : "0 4px 16px rgba(0,0,0,0.05)",
-                  transition: "border-color 0.2s, box-shadow 0.2s",
-                }}
-              >
-                <input
-                  type="email"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  onFocus={() => setFocused(true)}
-                  onBlur={() => setFocused(false)}
-                  placeholder="your@university.edu.kh"
-                  required
-                  style={{
-                    flex: 1, minWidth: 160,
-                    background: "transparent",
-                    border: "none", outline: "none",
-                    fontSize: "0.9rem", color: "#0f172a",
-                    fontFamily: "var(--font-geist, sans-serif)",
-                    padding: "8px 0",
-                  }}
-                />
-                <button
-                  type="submit"
-                  className="cs-btn"
-                  style={{
-                    background: "#10b981",
-                    color: "#fff", border: "none",
-                    borderRadius: 11,
-                    padding: "10px 20px",
-                    fontFamily: "var(--font-sora, sans-serif)",
-                    fontWeight: 600, fontSize: "0.875rem",
-                    cursor: "pointer", whiteSpace: "nowrap",
-                    transition: "background 0.2s, transform 0.15s, box-shadow 0.2s",
-                    flexShrink: 0,
-                  }}
-                >
-                  Notify me →
-                </button>
-              </form>
-              <p
-                style={{
-                  marginTop: 10, fontSize: "0.6875rem",
-                  color: "#9ca3af", letterSpacing: "0.02em",
-                  fontFamily: "var(--font-geist, sans-serif)",
-                }}
-              >
-                No spam. One email on launch day.
-              </p>
-            </>
-          ) : (
-            <div
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 10,
-                background: "rgba(16,185,129,0.07)",
-                border: "1.5px solid rgba(16,185,129,0.25)",
-                borderRadius: 14, padding: "14px 24px",
-                animation: "cs-scale-in 0.4s cubic-bezier(0.16,1,0.3,1) both",
-              }}
-            >
-              <span style={{ fontSize: 18 }}>🎉</span>
-              <span
-                style={{
-                  fontSize: "0.9rem", color: "#0f172a",
-                  fontFamily: "var(--font-geist, sans-serif)", fontWeight: 500,
-                }}
-              >
-                You&apos;re on the list! We&apos;ll let you know first.
-              </span>
-            </div>
-          )}
-        </div>
-
-        {/* Divider */}
-        <div
-          style={{
-            width: "100%", maxWidth: 260, height: 1,
-            background: "linear-gradient(90deg, transparent, #d7dce3, transparent)",
-            margin: "44px auto 28px",
-            animation: "cs-fade-up 0.6s cubic-bezier(0.16,1,0.3,1) both",
-            animationDelay: "0.3s",
-          }}
-        />
-
-        {/* Social icons */}
-        <div
-          style={{
-            display: "flex", alignItems: "center", gap: 10,
-            animation: "cs-fade-up 0.6s cubic-bezier(0.16,1,0.3,1) both",
-            animationDelay: "0.35s",
-          }}
-        >
-          {[
-            { label: "Telegram", Icon: TelegramIcon },
-            { label: "Facebook", Icon: FacebookIcon },
-            { label: "X / Twitter", Icon: XIcon },
-          ].map(({ label, Icon }) => (
-            <a
-              key={label}
-              href="#"
-              aria-label={label}
-              className="cs-social"
-              style={{
-                width: 40, height: 40, borderRadius: 12,
-                background: "#fff",
-                border: "1.5px solid #d7dce3",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                color: "#6b7280",
-                cursor: "pointer",
-                textDecoration: "none",
-                transition: "all 0.2s",
-              }}
-            >
-              <Icon />
-            </a>
-          ))}
-        </div>
+          <ArrowLeft size={16} strokeWidth={2.25} />
+          Go back
+        </button>
 
         {/* Copyright */}
         <p
